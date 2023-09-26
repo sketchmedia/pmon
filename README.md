@@ -1,0 +1,3 @@
+sudo node app.jd
+
+

@@ -1,0 +1,21 @@
+{
+  "name": "pmon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "node-schedule": "^2.1.1",
+    "ping": "^0.4.4",
+    "sqlite3": "^5.1.6"
+  }
+}
