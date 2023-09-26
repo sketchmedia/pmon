@@ -1,3 +1,3 @@
-sudo node app.jd
+sudo node app.js
 
 
