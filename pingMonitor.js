@@ -1,7 +1,7 @@
 const ping = require("ping");
 const sqlite3 = require("sqlite3").verbose();
 
-const hostToPing = "google.com"; // Replace with your target host
+const hostToPing = "google.co.uk";
 
 const start = () => {
   const schedule = require("node-schedule");

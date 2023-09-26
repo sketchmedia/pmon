@@ -1,7 +1,5 @@
-// app.js
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("ping_results.db");
 const app = express();
 const port = 3000;
 
@@ -10,7 +8,6 @@ const webUI = require("./webUI");
 
 app.set("view engine", "ejs");
 
-// Move database setup code to a separate function
 function setupDatabase() {
   const db = new sqlite3.Database("ping_results.db");
   db.serialize(() => {
