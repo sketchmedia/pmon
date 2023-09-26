@@ -11,15 +11,36 @@
 
 <body>
     <h1>Ping Results Chart</h1>
+    <div>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate">
+        <button onclick="updateChart()">Update Chart</button>
+    </div>
     <canvas id="pingChart" width="400" height="200"></canvas>
 
     <script>
         const ctx = document.getElementById('pingChart').getContext('2d');
         let pingChart; // Declare the chart variable
 
-        // Define a function to update the chart
         function updateChart() {
-            fetch('/ping-results/data')
+            let startDate = document.getElementById('startDate').value;
+            let endDate = document.getElementById('endDate').value;
+
+            // Check if time is missing and add it if necessary
+            if (!startDate.includes('T')) {
+                startDate = `${startDate}T00:00:00`;
+            }
+            if (!endDate.includes('T')) {
+                endDate = `${endDate}T23:59:59`;
+            }
+
+            // Convert to Unix timestamps
+            const unixStartDate = new Date(startDate).getTime();
+            const unixEndDate = new Date(endDate).getTime();
+
+            fetch(`/ping-results/data?startDate=${unixStartDate}&endDate=${unixEndDate}`)
                 .then((response) => response.json())
                 .then((data) => {
                     // Update the chart's data and labels
@@ -33,7 +54,7 @@
                 });
         }
 
-        // Create the initial chart
+        // Function to create the initial chart
         function createChart() {
             pingChart = new Chart(ctx, {
                 type: 'line',
@@ -67,7 +88,13 @@
                 },
             });
 
-            updateChart(); // Update the chart immediately
+            const currentDate = new Date().toISOString().slice(0, 10);
+
+            document.getElementById('startDate').value = currentDate;
+            document.getElementById('endDate').value = currentDate;
+
+            updateChart(); // Call updateChart on first load
+
             // Set up auto-update every 5 seconds (5000 milliseconds)
             setInterval(updateChart, 5000);
         }
