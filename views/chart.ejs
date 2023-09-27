@@ -7,33 +7,50 @@
     <title>Ping Results Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
 <body>
     <h1>Ping Results Chart</h1>
     <div>
         <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate">
+        <input type="text" id="startDate" name="startDate">
         <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate">
+        <input type="text" id="endDate" name="endDate">
         <button onclick="updateChart()">Update Chart</button>
     </div>
     <canvas id="pingChart" width="400" height="200"></canvas>
 
     <script>
         const ctx = document.getElementById('pingChart').getContext('2d');
+
+        let startDateElement = document.getElementById('startDate');
+        let endDateElement = document.getElementById('endDate');
+
         let pingChart; // Declare the chart variable
 
+        flatpickr(startDateElement, {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i:S",
+            time_24hr: true
+        });
+        flatpickr(endDateElement, {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i:S",
+            time_24hr: true
+        });
         function updateChart() {
-            let startDate = document.getElementById('startDate').value;
-            let endDate = document.getElementById('endDate').value;
+
+            let startDate = startDateElement.value;
+            let endDate = endDateElement.value;
 
             // Check if time is missing and add it if necessary
-            if (!startDate.includes('T')) {
-                startDate = `${startDate}T00:00:00`;
+            if (!startDate.includes(':')) {
+                startDate = `${startDate} 00:00:00`;
             }
-            if (!endDate.includes('T')) {
-                endDate = `${endDate}T23:59:59`;
+            if (!endDate.includes(':')) {
+                endDate = `${endDate} 23:59:59`;
             }
 
             // Convert to Unix timestamps
@@ -89,9 +106,12 @@
             });
 
             const currentDate = new Date().toISOString().slice(0, 10);
+            // get date 2 hours ago
+            const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString().slice(11, 19);
 
-            document.getElementById('startDate').value = currentDate;
-            document.getElementById('endDate').value = currentDate;
+
+            document.getElementById('startDate').value = currentDate + ` ${twoHoursAgo}`;
+            document.getElementById('endDate').value = currentDate + ' 23:59:59';
 
             updateChart(); // Call updateChart on first load
 
