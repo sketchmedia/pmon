@@ -91,6 +91,14 @@
                     }],
                 },
                 options: {
+                    options: {
+                        spanGaps: true,
+                        datasets: {
+                            line: {
+                                pointRadius: 0 // disable for all `'line'` datasets
+                            }
+                        },
+                    },
                     scales: {
                         x: {
                             type: 'time',
@@ -115,7 +123,7 @@
 
             updateChart(); // Call updateChart on first load
 
-            // Set up auto-update every 5 seconds (5000 milliseconds)
+            // Set up auto-update every 5 seconds (20000 milliseconds)
             setInterval(updateChart, 5000);
         }
 
