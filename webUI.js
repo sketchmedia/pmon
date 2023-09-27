@@ -37,7 +37,7 @@ router.get("/data", (req, res) => {
   const db = new sqlite3.Database("ping_results.db");
 
   // Define the window size for calculating the moving average and standard deviation.
-  const windowSize = 10; // Adjust this value as needed.
+  const windowSize = 60; // Adjust this value as needed.
 
   // Use SQL queries to retrieve data within the date range.
   const query = `
@@ -94,12 +94,14 @@ router.get("/data", (req, res) => {
       }
     }
 
-    const timestamps = filteredRows.map((row) =>
+    const significantRows = filteredRows.filter((row) => row.significant);
+
+    const timestamps = significantRows.map((row) =>
       new Date(row.timestamp).toISOString()
     );
-    const responseTimes = filteredRows.map((row) => row.response_time);
-    const packetLoss = filteredRows.map((row) => row.packet_loss);
-    const isSignificant = filteredRows.map((row) => row.significant || false);
+    const responseTimes = significantRows.map((row) => row.response_time);
+    const packetLoss = significantRows.map((row) => row.packet_loss);
+    const isSignificant = significantRows.map(() => true);
 
     res.json({timestamps, responseTimes, packetLoss, isSignificant});
   });
