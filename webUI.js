@@ -37,7 +37,7 @@ router.get("/data", (req, res) => {
   const db = new sqlite3.Database("ping_results.db");
 
   // Define the window size for calculating the moving average and standard deviation.
-  const windowSize = 5; // Adjust this value as needed.
+  const windowSize = 10; // Adjust this value as needed.
 
   // Use SQL queries to retrieve data within the date range.
   const query = `
